@@ -7,7 +7,6 @@ const Messages = () => {
   const message = useRef(null);
   useEffect(() => {
     message.current.scrollIntoView({ behavior: 'smooth', block: 'end' });
-    console.log('message.current', message.current);
   }, []);
   return (
     <div className="w-9/12 relative max-h-screen flex flex-col">

@@ -1,12 +1,15 @@
 /* eslint-disable react/no-unknown-property */
-import { BiMessageAdd } from 'react-icons/bi';
+import { BiLogOut, BiMessageAdd } from 'react-icons/bi';
 import { ChatItem, Search } from '../../components';
 
 const ChatList = () => (
   <div className="w-3/12 relative min-h-screen max-h-screen select-none">
     <header className="flex flex-row ">
       <Search />
-      <button type="button" className="w-2-12 px-4 py-2 m-1 bg-blue-600 rounded-3xl">
+      <button type="button" className="w-fit px-4 py-1 m-1 bg-red-600 rounded-3xl">
+        <BiLogOut className="text-white text-2xl w-fit" />
+      </button>
+      <button type="button" className="w-2/12 px-4 py-2 m-1 bg-blue-600 rounded-3xl">
         <BiMessageAdd className="text-white text-2xl w-fit" />
       </button>
     </header>
