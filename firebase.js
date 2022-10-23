@@ -27,7 +27,4 @@ export const auth = getAuth();
 export const storage = getStorage();
 export const db = getFirestore();
 export const FirebaseContext = createContext(null);
-export default ({ children }) => {
-
-};
 // export const analytics = getAnalytics(app);

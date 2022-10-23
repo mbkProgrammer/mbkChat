@@ -1,12 +1,14 @@
 import Image from 'next/image';
 import Link from 'next/link';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { createUserWithEmailAndPassword, updateProfile } from 'firebase/auth';
 import { ref, uploadBytesResumable, getDownloadURL } from 'firebase/storage';
 import { doc, setDoc } from 'firebase/firestore';
 import { AiOutlineLoading } from 'react-icons/ai';
 import { useRouter } from 'next/router';
-import { auth, db, storage } from '../firebase';
+import { useDispatch, useSelector } from 'react-redux';
+import { db, storage } from '../firebase';
+import { CREATE_USER_ACTION } from '../actions/auth';
 
 const signUp = () => {
   const [signUpProfileImgLink, setSignUpProfileImgLink] = useState('');
@@ -16,12 +18,24 @@ const signUp = () => {
   const [disableSubmit, setDisableSubmit] = useState(false);
   const [submitLoading, setSubmitLoading] = useState(false);
   const [imageUploadLoading, setImageUploadLoading] = useState(false);
-
+  const [errorMessage, setErrorMessage] = useState('');
+  const dispatch = useDispatch();
+  const auth = useSelector((state) => state.auth);
   const router = useRouter();
-
   const metadata = {
     contentType: 'image/jpeg',
   };
+
+  useEffect(() => {
+    setError(auth.signUpError);
+    setSubmitLoading(auth.loading);
+    if (auth.response && auth.response.uid !== '') {
+      router.push('/');
+    }
+    if (auth.signUpError) {
+      setErrorMessage(auth.errorMessage.code);
+    }
+  }, [auth]);
 
   const handleChangeProfile = async (e) => {
     if (e) e.preventDefault();
@@ -73,38 +87,19 @@ const signUp = () => {
   const handleSubmit = async (e) => {
     if (e) e.preventDefault();
     setSubmitLoading(true);
-    try {
-      const res = await createUserWithEmailAndPassword(
-        auth,
-        signUpInfo.email,
-        signUpInfo.password,
-      );
-      await updateProfile(auth.currentUser, {
-        displayName: signUpInfo.displayName,
-        photoURL: signUpProfileImgLink,
-      });
-      await setDoc(doc(db, 'users', res.user.uid), {
-        uid: res.user.uid,
-        displayName: signUpInfo.displayName,
-        email: signUpInfo.email,
-        photoURL: signUpProfileImgLink,
-      });
-      await setDoc(doc(db, 'userChats', res.user.uid), {});
-      setSubmitLoading(false);
-      setError(false);
-      router.push('./');
-    } catch (error) {
-      setSubmitLoading(false);
-      console.log('error', error);
-      setError(true);
-    }
+    dispatch(CREATE_USER_ACTION({
+      email: signUpInfo.email,
+      password: signUpInfo.password,
+      displayName: signUpInfo.displayName,
+      photoURL: signUpProfileImgLink,
+    }));
   };
 
   return (
     <div className="signUp bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 flex justify-center items-center min-h-screen">
       <form
         onSubmit={handleSubmit}
-        className="flex flex-col rounded-xl items-center p-4 bg-gray-500/50 backdrop-blur"
+        className="max-w-xs flex flex-col rounded-xl items-center p-4 bg-gray-500/50 backdrop-blur"
       >
         <label
           htmlFor="profile-upload"
@@ -164,7 +159,7 @@ const signUp = () => {
         <div className="text-blue-300 mt-2 mx-1">
           <Link href="/signIn">Do you have an account? sign in.</Link>
         </div>
-        <p>{error ? 'Something went wrong!!' : ''}</p>
+        <p className="text-red-700 text-lg">{error ? `Error: ${errorMessage}` : ''}</p>
       </form>
     </div>
   );
