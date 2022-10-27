@@ -56,6 +56,33 @@ const auth = (state = {}, action) => {
         errorMessage: action.errorMessage,
       };
     }
+
+    case actionTypes.UPDATE_USER_STARTED: {
+      return {
+        ...state,
+        loading: action.loading,
+        logged: action.logged,
+        signInError: action.signInError,
+      };
+    }
+    case actionTypes.UPDATE_USER_SUCCESS: {
+      return {
+        ...state,
+        loading: action.loading,
+        logged: action.logged,
+        signInError: action.signInError,
+        response: action.response,
+      };
+    }
+    case actionTypes.UPDATE_USER_FAILED: {
+      return {
+        ...state,
+        signInError: action.signInError,
+        loading: action.loading,
+        logged: action.logged,
+        errorMessage: action.errorMessage,
+      };
+    }
     default: return state;
   }
 };

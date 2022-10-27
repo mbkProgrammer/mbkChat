@@ -1,15 +1,24 @@
 /* eslint-disable react/no-unknown-property */
+import { signOut } from 'firebase/auth';
 import { BiLogOut, BiMessageAdd } from 'react-icons/bi';
 import { ChatItem, Search } from '../../components';
+import { auth } from '../../firebase';
 
 const ChatList = () => (
   <div className="w-3/12 relative min-h-screen max-h-screen select-none">
     <header className="flex flex-row ">
       <Search />
-      <button type="button" className="w-fit px-4 py-1 m-1 bg-red-600 rounded-3xl">
+      <button
+        type="button"
+        className="w-fit px-4 py-1 m-1 bg-red-600 rounded-3xl"
+        onClick={() => signOut(auth)}
+      >
         <BiLogOut className="text-white text-2xl w-fit" />
       </button>
-      <button type="button" className="w-2/12 px-4 py-2 m-1 bg-blue-600 rounded-3xl">
+      <button
+        type="button"
+        className="w-2/12 px-4 py-2 m-1 bg-blue-600 rounded-3xl"
+      >
         <BiMessageAdd className="text-white text-2xl w-fit" />
       </button>
     </header>
@@ -42,18 +51,26 @@ const ChatList = () => (
 
     <style jsx>
       {`
-      .chatlists::-webkit-scrollbar {
-        width: 5px;
-      }
+        .chatlists::-webkit-scrollbar {
+          width: 5px;
+        }
 
-      .chatlists::-webkit-scrollbar-track {
-        background: #f1f1f1;
-      }
-      .chatlists::-webkit-scrollbar-thumb {
-        background: radial-gradient(circle, rgba(2,0,36,1) 0%, rgba(9,121,11,1) 0%, rgba(7,146,79,1) 22%, rgba(5,162,121,1) 41%, rgba(4,173,150,1) 65%, rgba(0,212,255,1) 100%);
-        border-radius: 2px;
-      }
-    `}
+        .chatlists::-webkit-scrollbar-track {
+          background: #f1f1f1;
+        }
+        .chatlists::-webkit-scrollbar-thumb {
+          background: radial-gradient(
+            circle,
+            rgba(2, 0, 36, 1) 0%,
+            rgba(9, 121, 11, 1) 0%,
+            rgba(7, 146, 79, 1) 22%,
+            rgba(5, 162, 121, 1) 41%,
+            rgba(4, 173, 150, 1) 65%,
+            rgba(0, 212, 255, 1) 100%
+          );
+          border-radius: 2px;
+        }
+      `}
     </style>
   </div>
 );

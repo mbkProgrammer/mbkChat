@@ -1,6 +1,8 @@
 import Head from 'next/head';
 import Image from 'next/image';
+import { firebaseAdmin } from '../firebaseAdmin';
 import { ChatList, Messages } from '../container';
+// import { getAuth } from 'firebase/auth';
 
 export default function Home() {
   return (
@@ -15,3 +17,22 @@ export default function Home() {
     </div>
   );
 }
+
+export const getStaticProps = async () => {
+  const token = await firebaseAdmin.auth().verifyIdToken('eyJhbGciOiJSUzI1NiIsImtpZCI6IjNmNjcyNDYxOTk4YjJiMzMyYWQ4MTY0ZTFiM2JlN2VkYTY4NDZiMzciLCJ0eXAiOiJKV1QifQ.eyJuYW1lIjoibWJrMjAxOS5jb0BnbWFpbC5jb20iLCJwaWN0dXJlIjoiIiwiaXNzIjoiaHR0cHM6Ly9zZWN1cmV0b2tlbi5nb29nbGUuY29tL21ia2NoYXQtNWI5OTYiLCJhdWQiOiJtYmtjaGF0LTViOTk2IiwiYXV0aF90aW1lIjoxNjY2NzIzNDk4LCJ1c2VyX2lkIjoiMGtKa0pPQ1JZUFBkQ05YT0ZkNlNoMlVFbXhsMSIsInN1YiI6IjBrSmtKT0NSWVBQZENOWE9GZDZTaDJVRW14bDEiLCJpYXQiOjE2NjY3NTE5MDAsImV4cCI6MTY2Njc1NTUwMCwiZW1haWwiOiJtYmsyMGRlZHcxOS5jb0BnbWFpbC5jb20iLCJlbWFpbF92ZXJpZmllZCI6ZmFsc2UsImZpcmViYXNlIjp7ImlkZW50aXRpZXMiOnsiZW1haWwiOlsibWJrMjBkZWR3MTkuY29AZ21haWwuY29tIl19LCJzaWduX2luX3Byb3ZpZGVyIjoicGFzc3dvcmQifX0.KDGd-UWwYet1fOumhWpk7sC8l45Sho3WR67SWrQAaAtgX_ifnN3BzJxaC3VB5EO_cn4BUCoD-D7GSiTOhVreGdtKUdJnL8CR3gguSjI1xt84eRFZlrVgyQ9mZaCfpPCVi34pfIW1JmVtI8Nt3uL9hxBR7wCaWfxUU1I_O1zECeKg-g-owuIif0lY_wTz4OxG2lrnhWZhWRIHWNq2Ir8cGKoFQVbeph_enCEaCuLbmUktwpG3aZOJziuatAgvvk_6gPqKbKOG0mUxk3fE8Dcw3qWp5nZ3JxGWqEKkDvT7HIDwFijaB5JrtGqv8pe5-OpRwlUIhjM2xd6lfrHty2YxIA');
+  console.log('auth :>> ');
+  return {
+    props: {
+
+    },
+  };
+};
+
+// Home.getServerSideProps = async (appContext) => {
+//   // console.log('ctx', admin);
+//   console.log('appContext :>> ', appContext);
+
+//   return {
+
+//   };
+// };
