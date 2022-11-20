@@ -6,6 +6,7 @@ import { useEffect, useState } from 'react';
 import { AiOutlineLoading } from 'react-icons/ai';
 import { useDispatch, useSelector } from 'react-redux';
 import { SIGN_IN_USER_ACTION } from '../actions/auth';
+import firebaseAdmin from '../firebaseAdmin';
 
 const signIn = () => {
   const [signInInfo, setsignInInfo] = useState({});
@@ -60,6 +61,18 @@ const signIn = () => {
       </form>
     </div>
   );
+};
+export const getStaticProps = async ({ ctx }) => {
+  try {
+    const token = await firebaseAdmin.auth().verifyIdToken('eyJhbGciOiJSUzI1NiIsImtpZCI6ImQ3YjE5MTI0MGZjZmYzMDdkYzQ3NTg1OWEyYmUzNzgzZGMxYWY4OWYiLCJ0eXAiOiJKV1QifQ.eyJpc3MiOiJodHRwczovL3NlY3VyZXRva2VuLmdvb2dsZS5jb20vbWJrY2hhdC01Yjk5NiIsImF1ZCI6Im1ia2NoYXQtNWI5OTYiLCJhdXRoX3RpbWUiOjE2NjgwOTA0MjIsInVzZXJfaWQiOiJXd0ZRRXV2OHE5UjZOSWt3amRJYlBWbk10TW0yIiwic3ViIjoiV3dGUUV1djhxOVI2Tklrd2pkSWJQVm5NdE1tMiIsImlhdCI6MTY2ODA5MDQyMiwiZXhwIjoxNjY4MDk0MDIyLCJlbWFpbCI6Im1ia2RkZTIwMTkuY29AZ21haWwuY29tIiwiZW1haWxfdmVyaWZpZWQiOmZhbHNlLCJmaXJlYmFzZSI6eyJpZGVudGl0aWVzIjp7ImVtYWlsIjpbIm1ia2RkZTIwMTkuY29AZ21haWwuY29tIl19LCJzaWduX2luX3Byb3ZpZGVyIjoicGFzc3dvcmQifX0.AOsR6LoVa6EdnkoV3LPFfSo5edTqPADLwoJKI4PZ-_9A3QaaVn9tWhzdN53fU3VD7t5XD7HQwSlKE5p2TW9gLCEOjeo6YmJ4XW9IEhGdCITM9YAQ2Igxivir7GYP-_yYZH1TX1acDJTel8f1TioNumxlp4BzmQwrNxA04T_oHwn3Aw3U9300xRmwgR1boSEuL3dQzNoHTU9s3twTr_j3o5PLLJJZePLrci26TVhsXNrvtjNTdUNGIaYaRy-NtZ2kgihi9f4d5aChA1AcKZpIIIK1Ljdi30i_C2vwkXUDVVF1QJvTx92xGYZuLiL1DfcBctYARYiP_l_AoNOfZw4r6A');
+    return {
+      redirect: { destination: '/' },
+    };
+  } catch (error) {
+    return {
+      props: {},
+    };
+  }
 };
 
 export default signIn;

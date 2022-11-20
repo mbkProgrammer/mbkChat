@@ -1,9 +1,8 @@
 // Import the functions you need from the SDKs you need
 import * as firebase from 'firebase/app';
-import { getAuth } from 'firebase/auth';
+import { getAuth, setPersistence, browserSessionPersistence } from 'firebase/auth';
 import { getStorage } from 'firebase/storage';
 import { getFirestore } from 'firebase/firestore';
-// import { } from 'firebase-admin';
 
 const firebaseConfig = {
   apiKey: 'AIzaSyB5ZZOR0k6vO4WCkIf796GweDXwOZn07Go',
@@ -15,14 +14,16 @@ const firebaseConfig = {
   measurementId: 'G-8L2Q44Y3W8',
 };
 
-// if (typeof window !== 'undefined' && !firebase.apps) {
-//   firebase.initializeApp(firebaseConfig);
-// }
+let app;
 
+if (typeof window !== 'undefined' && !firebase.getApps().length) {
+  app = firebase.initializeApp(firebaseConfig);
+  const authTemp = getAuth();
+  setPersistence(authTemp, browserSessionPersistence);
+}
 // Initialize Firebase
-
-const app = !firebase.getApps().length ? firebase.initializeApp(firebaseConfig) : firebase.getApp();
-export const auth = getAuth();
-export const storage = getStorage();
-export const db = getFirestore();
+// export const auth = app ? getAuth() : {};
+export const auth = app && getAuth();
+export const storage = app && getStorage();
+export const db = app && getFirestore();
 // export const analytics = getAnalytics(app);

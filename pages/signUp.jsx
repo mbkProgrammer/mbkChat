@@ -1,14 +1,15 @@
 import Image from 'next/image';
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
-import { createUserWithEmailAndPassword, updateProfile } from 'firebase/auth';
 import { ref, uploadBytesResumable, getDownloadURL } from 'firebase/storage';
 import { doc, setDoc } from 'firebase/firestore';
 import { AiOutlineLoading } from 'react-icons/ai';
 import { useRouter } from 'next/router';
 import { useDispatch, useSelector } from 'react-redux';
+import Cookies from 'universal-cookie';
 import { db, storage } from '../firebase';
 import { CREATE_USER_ACTION } from '../actions/auth';
+import firebaseAdmin from '../firebaseAdmin';
 
 const signUp = () => {
   const [signUpProfileImgLink, setSignUpProfileImgLink] = useState('');
@@ -163,6 +164,22 @@ const signUp = () => {
       </form>
     </div>
   );
+};
+
+export const getServerSideProps = async ({ req }) => {
+  // console.log('req :>> ', req.);
+  const cookies = new Cookies(req.headers.cookie);
+  const cookieToken = cookies.get('token');
+  try {
+    await firebaseAdmin.auth().verifyIdToken(cookieToken);
+    return {
+      redirect: { destination: '/' },
+    };
+  } catch {
+    return {
+      props: {},
+    };
+  }
 };
 
 export default signUp;
