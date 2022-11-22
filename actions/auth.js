@@ -1,5 +1,9 @@
 import {
-  createUserWithEmailAndPassword, onAuthStateChanged, signInWithEmailAndPassword, updateProfile,
+  createUserWithEmailAndPassword,
+  onAuthStateChanged,
+  signInWithEmailAndPassword,
+  signOut,
+  updateProfile,
 } from 'firebase/auth';
 import { doc, setDoc } from 'firebase/firestore';
 import actionTypes from '../configs/actionTypes';
@@ -102,4 +106,36 @@ const UPDATE_USER_ACTION = () => async (dispatch) => {
     });
   }
 };
-export { CREATE_USER_ACTION, SIGN_IN_USER_ACTION, UPDATE_USER_ACTION };
+
+const LOG_OUT_ACTION = () => async (dispatch) => {
+  dispatch({
+    type: actionTypes.LOG_OUT_STARTED,
+    loading: true,
+    logged: true,
+    signInError: false,
+  });
+  try {
+    await signOut(auth);
+    dispatch({
+      type: actionTypes.LOG_OUT_SUCCESS,
+      loading: false,
+      logged: true,
+      response: auth.currentUser,
+      signInError: false,
+    });
+  } catch (error) {
+    dispatch({
+      type: actionTypes.LOG_OUT_FAILED,
+      loading: false,
+      logged: false,
+      signInError: true,
+      errorMessage: error,
+    });
+  }
+};
+export {
+  CREATE_USER_ACTION,
+  SIGN_IN_USER_ACTION,
+  UPDATE_USER_ACTION,
+  LOG_OUT_ACTION,
+};

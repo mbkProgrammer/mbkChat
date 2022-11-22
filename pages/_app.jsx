@@ -6,6 +6,7 @@ import Cookies from 'universal-cookie';
 import { auth } from '../firebase';
 import store from '../configs/store';
 import '../styles/globals.css';
+import { UPDATE_USER_ACTION } from '../actions/auth';
 
 const AppWrapper = ({ Component, pageProps }) => (
   <Provider store={store}>
@@ -22,16 +23,26 @@ const AppWrapper = ({ Component, pageProps }) => (
 
 function MyApp({ Component, pageProps }) {
   const cookies = new Cookies();
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    auth.onAuthStateChanged(async (user) => {
+      if (user && user.uid !== '') {
+        dispatch(UPDATE_USER_ACTION());
+      }
+    });
+  }, []);
+
   useEffect(() => {
     auth.onIdTokenChanged(async (user) => {
       if (!user) {
-        // cookies.set('token', '', { path: '/' });
+        cookies.set('token', '', { path: '/' });
       } else {
         const token = await user.getIdToken();
         cookies.set('token', token, { path: '/' });
       }
     });
-  }, []);
+  }, [auth]);
   return (
     <Component {...pageProps} />
   );

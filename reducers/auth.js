@@ -83,6 +83,32 @@ const auth = (state = {}, action) => {
         errorMessage: action.errorMessage,
       };
     }
+    case actionTypes.LOG_OUT_STARTED: {
+      return {
+        ...state,
+        loading: action.loading,
+        logged: action.logged,
+        signInError: action.signInError,
+      };
+    }
+    case actionTypes.LOG_OUT_SUCCESS: {
+      return {
+        ...state,
+        loading: action.loading,
+        logged: action.logged,
+        signInError: action.signInError,
+        response: action.response,
+      };
+    }
+    case actionTypes.LOG_OUT_FAILED: {
+      return {
+        ...state,
+        signInError: action.signInError,
+        loading: action.loading,
+        logged: action.logged,
+        errorMessage: action.errorMessage,
+      };
+    }
     default: return state;
   }
 };

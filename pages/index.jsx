@@ -1,14 +1,23 @@
 import Head from 'next/head';
 import Image from 'next/image';
 import { useEffect } from 'react';
-import { auth } from '../firebase';
+import Cookies from 'universal-cookie';
+import { useRouter } from 'next/router';
+import { useSelector } from 'react-redux';
 import { ChatList, Messages } from '../container';
 import firebaseAdmin from '../firebaseAdmin';
+import wrapper from '../configs/store';
 
 export default function Home() {
+  const { auth } = useSelector((state) => state);
+  const router = useRouter();
   useEffect(() => {
-    console.log('auth', auth);
-  });
+    if (auth.response && auth.response.uid !== '') {
+      console.log('auth :>> ', auth);
+    } else {
+      router.push('/signUp');
+    }
+  }, [auth]);
   return (
     <div className="flex flex-row p-1 max-h-screen overflow-hidden">
       <Head>
@@ -22,24 +31,33 @@ export default function Home() {
   );
 }
 
-export const getStaticProps = async (context) => {
-  console.log('ctx :>> ', context);
+export const getServerSideProps = async ({ req }) => {
+  // console.log('req :>> ', req.);
+  const cookies = new Cookies(req.headers.cookie);
+  const cookieToken = cookies.get('token');
   try {
-    const token = await firebaseAdmin.auth().verifyIdToken('eyJhbGciOiJSUzI1NiIsImtpZCI6ImQ3YjE5MTI0MGZjZmYzMDdkYzQ3NTg1OWEyYmUzNzgzZGMxYWY4OWYiLCJ0eXAiOiJKV1QifQ.eyJpc3MiOiJodHRwczovL3NlY3VyZXRva2VuLmdvb2dsZS5jb20vbWJrY2hhdC01Yjk5NiIsImF1ZCI6Im1ia2NoYXQtNWI5OTYiLCJhdXRoX3RpbWUiOjE2NjgwOTA0MjIsInVzZXJfaWQiOiJXd0ZRRXV2OHE5UjZOSWt3amRJYlBWbk10TW0yIiwic3ViIjoiV3dGUUV1djhxOVI2Tklrd2pkSWJQVm5NdE1tMiIsImlhdCI6MTY2ODA5MDQyMiwiZXhwIjoxNjY4MDk0MDIyLCJlbWFpbCI6Im1ia2RkZTIwMTkuY29AZ21haWwuY29tIiwiZW1haWxfdmVyaWZpZWQiOmZhbHNlLCJmaXJlYmFzZSI6eyJpZGVudGl0aWVzIjp7ImVtYWlsIjpbIm1ia2RkZTIwMTkuY29AZ21haWwuY29tIl19LCJzaWduX2luX3Byb3ZpZGVyIjoicGFzc3dvcmQifX0.AOsR6LoVa6EdnkoV3LPFfSo5edTqPADLwoJKI4PZ-_9A3QaaVn9tWhzdN53fU3VD7t5XD7HQwSlKE5p2TW9gLCEOjeo6YmJ4XW9IEhGdCITM9YAQ2Igxivir7GYP-_yYZH1TX1acDJTel8f1TioNumxlp4BzmQwrNxA04T_oHwn3Aw3U9300xRmwgR1boSEuL3dQzNoHTU9s3twTr_j3o5PLLJJZePLrci26TVhsXNrvtjNTdUNGIaYaRy-NtZ2kgihi9f4d5aChA1AcKZpIIIK1Ljdi30i_C2vwkXUDVVF1QJvTx92xGYZuLiL1DfcBctYARYiP_l_AoNOfZw4r6A');
+    await firebaseAdmin.auth().verifyIdToken(cookieToken);
+    return {
+      props: {},
+    };
   } catch {
     return {
       redirect: { destination: '/signUp' },
     };
   }
-  // console.log('auth :>> ', token);
-  return {
-    props: { },
-  };
 };
-
-// export async function getStaticPaths() {
-//   return {
-//     paths: '/signUp',
-//     fallback: false, // can also be true or 'blocking'
-//   };
-// }
+// export const getServerSideProps = async ({ req }) => {
+//   // console.log('req :>> ', req.);
+//   const cookies = new Cookies(req.headers.cookie);
+//   const cookieToken = cookies.get('token');
+//   try {
+//     await firebaseAdmin.auth().verifyIdToken(cookieToken);
+//     return {
+//       props: {},
+//     };
+//   } catch {
+//     return {
+//       redirect: { destination: '/signUp' },
+//     };
+//   }
+// };
