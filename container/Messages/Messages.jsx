@@ -9,7 +9,7 @@ const Messages = () => {
     message.current.scrollIntoView({ behavior: 'smooth', block: 'end' });
   }, []);
   return (
-    <div className="w-9/12 relative max-h-screen flex flex-col">
+    <div className="w-8/12 relative max-h-screen flex flex-col">
       <TopBar />
       <div className="message w-full overflow-auto">
         <div ref={message} className="chat__messages md:mx-20 flex flex-col-reverse justify-items-end overflow-auto ">

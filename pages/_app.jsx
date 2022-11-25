@@ -3,10 +3,12 @@ import App from 'next/app';
 import { useEffect } from 'react';
 import { Provider, useDispatch } from 'react-redux';
 import Cookies from 'universal-cookie';
-import { auth } from '../firebase';
+import { doc, onSnapshot } from 'firebase/firestore';
+import { auth, db } from '../firebase';
 import store from '../configs/store';
 import '../styles/globals.css';
 import { UPDATE_USER_ACTION } from '../actions/auth';
+import { GET_CHAT_ACTION } from '../actions';
 
 const AppWrapper = ({ Component, pageProps }) => (
   <Provider store={store}>
@@ -29,6 +31,7 @@ function MyApp({ Component, pageProps }) {
     auth.onAuthStateChanged(async (user) => {
       if (user && user.uid !== '') {
         dispatch(UPDATE_USER_ACTION());
+        dispatch(GET_CHAT_ACTION());
       }
     });
   }, []);

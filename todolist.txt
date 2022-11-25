@@ -1,1 +1,5 @@
+fix chats action error to get ADD_CHATS_ACTION, GET_CHATS_ACTION
+
+use next-redux-wrapper for ssr auth
 fix responsive error;
+set when online status
