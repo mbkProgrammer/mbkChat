@@ -17,7 +17,6 @@ export default function Home() {
   useEffect(() => {
     if (auth.response && auth.response.uid !== '') {
       dispatch(GET_CHAT_ACTION());
-      console.log('auth :>> ', auth);
     } else {
       router.push('/signUp');
     }
@@ -46,7 +45,8 @@ export const getServerSideProps = async ({ req }) => {
     return {
       props: {},
     };
-  } catch {
+  } catch (e) {
+    cookies.set('token', '', { path: '/' });
     return {
       redirect: { destination: '/signUp' },
     };

@@ -1,4 +1,4 @@
-import actionTypes from "../configs/actionTypes";
+import actionTypes from '../configs/actionTypes';
 
 const chats = (state = {}, action) => {
   switch (action.type) {
@@ -36,7 +36,7 @@ const chats = (state = {}, action) => {
       return {
         ...state,
         loading: action.loading,
-        response: action.response,
+        chats: action.response,
         error: action.error,
       };
     }
@@ -48,7 +48,7 @@ const chats = (state = {}, action) => {
       };
     }
 
-    default: return state
+    default: return state;
   }
 };
 

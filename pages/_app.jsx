@@ -31,7 +31,6 @@ function MyApp({ Component, pageProps }) {
     auth.onAuthStateChanged(async (user) => {
       if (user && user.uid !== '') {
         dispatch(UPDATE_USER_ACTION());
-        dispatch(GET_CHAT_ACTION());
       }
     });
   }, []);

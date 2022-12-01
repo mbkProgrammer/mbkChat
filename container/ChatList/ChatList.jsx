@@ -1,11 +1,12 @@
 /* eslint-disable react/no-unknown-property */
 import { signOut } from 'firebase/auth';
 import { BiLogOut, BiMessageAdd } from 'react-icons/bi';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { useState, useEffect } from 'react';
 import {
   collection, getDocs, query, where,
 } from 'firebase/firestore';
+import { AiOutlineLoading3Quarters } from 'react-icons/ai';
 import { LOG_OUT_ACTION } from '../../actions/auth';
 import { ChatItem, Search } from '../../components';
 import { db } from '../../firebase';
@@ -14,6 +15,7 @@ const ChatList = ({ setOpenAddChat }) => {
   const [userSaerch, setUserSearch] = useState('');
   const [users, setUsers] = useState([null]);
   const dispatch = useDispatch();
+  const { chats, loading } = useSelector((state) => state.chats);
 
   const handleSearch = async () => {
     const q = query(
@@ -52,8 +54,9 @@ const ChatList = ({ setOpenAddChat }) => {
           <BiMessageAdd className="text-white text-2xl w-fit" />
         </button>
       </header>
+      {loading && (<AiOutlineLoading3Quarters className="animate-spin m-auto text-xl" />)}
       <div className="overflow-auto w-full max-h-full absolute chatlists ">
-        <ChatItem />
+        {chats && chats.map((chat) => chat[1].date && <ChatItem data={chat[1]} key={chat[0]} />) }
       </div>
 
       <style jsx>

@@ -1,4 +1,4 @@
-fix chats action error to get ADD_CHATS_ACTION, GET_CHATS_ACTION
+complete from video
 
 use next-redux-wrapper for ssr auth
 fix responsive error;

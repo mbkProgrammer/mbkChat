@@ -175,7 +175,7 @@ export const getServerSideProps = async ({ req }) => {
     return {
       redirect: { destination: '/' },
     };
-  } catch {
+  } catch (e) {
     return {
       props: {},
     };

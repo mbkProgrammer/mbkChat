@@ -5,6 +5,7 @@ import {
   LOG_OUT_ACTION,
 } from './auth';
 import { GET_CHAT_ACTION, ADD_CHAT_ACTION } from './chats';
+import CHANGE_MESSAGE_ACTION from './messages';
 
 export {
   CREATE_USER_ACTION,
@@ -13,4 +14,5 @@ export {
   LOG_OUT_ACTION,
   GET_CHAT_ACTION,
   ADD_CHAT_ACTION,
+  CHANGE_MESSAGE_ACTION,
 };

@@ -1,5 +1,15 @@
 import {
-  collection, doc, getDoc, getDocs, onSnapshot, query, serverTimestamp, setDoc, updateDoc, where,
+  collection,
+  doc,
+  getDoc,
+  getDocs,
+  onSnapshot,
+  orderBy,
+  query,
+  serverTimestamp,
+  setDoc,
+  updateDoc,
+  where,
 } from 'firebase/firestore';
 import actionTypes from '../configs/actionTypes';
 import { auth, db } from '../firebase';
@@ -81,15 +91,22 @@ const GET_CHAT_ACTION = () => async (dispatch) => {
 
   try {
     const { currentUser } = auth;
-    onSnapshot(doc(db, 'userChats', currentUser.uid), (doc) => {
-      dispatch({
-        type: actionTypes.GET_CHAT_SUCCESS,
-        loading: false,
-        response: doc.data(),
-        error: false,
+    if (currentUser) {
+      onSnapshot(doc(db, 'userChats', currentUser.uid), (doc) => {
+        const data = doc.data()
+          && Object.entries(doc.data()).sort(
+            (a, b) => b[1].date.seconds - a[1].date.seconds,
+          );
+        dispatch({
+          type: actionTypes.GET_CHAT_SUCCESS,
+          loading: false,
+          response: data,
+          error: false,
+        });
       });
-    });
-  } catch {
+    }
+  } catch (e) {
+    console.log('e :>> ', e);
     dispatch({
       type: actionTypes.GET_CHAT_FAILED,
       loading: false,
