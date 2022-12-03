@@ -2,4 +2,10 @@ complete from video
 
 use next-redux-wrapper for ssr auth
 fix responsive error;
+change signup uplaod img with redux
 set when online status
+
+
+optional{
+  set typing status
+}

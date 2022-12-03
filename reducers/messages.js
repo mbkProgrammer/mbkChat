@@ -9,6 +9,7 @@ const messages = (state = {}, action) => {
         error: action.error,
         activeUser: action.activeUser,
         messages: action.messages,
+        chatId: action.chatId,
       };
     }
     case actionTypes.CHANGE_MESSAGES_SUCCESS: {
@@ -18,6 +19,7 @@ const messages = (state = {}, action) => {
         error: action.error,
         messages: action.messages.messages,
         activeUser: action.activeUser,
+        chatId: action.chatId,
       };
     }
     case actionTypes.CHANGE_MESSAGES_FAILED: {

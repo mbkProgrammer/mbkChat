@@ -93,9 +93,9 @@ const GET_CHAT_ACTION = () => async (dispatch) => {
     const { currentUser } = auth;
     if (currentUser) {
       onSnapshot(doc(db, 'userChats', currentUser.uid), (doc) => {
-        const data = doc.data()
+        const data = doc.exists()
           && Object.entries(doc.data()).sort(
-            (a, b) => b[1].date.seconds - a[1].date.seconds,
+            (a, b) => b[1].date && (b[1].date - a[1].date),
           );
         dispatch({
           type: actionTypes.GET_CHAT_SUCCESS,
