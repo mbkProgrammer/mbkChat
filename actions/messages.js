@@ -22,11 +22,15 @@ const CHANGE_MESSAGE_ACTION = ({ userUID }) => async (dispatch) => {
       ? currentUser.uid + userUID
       : userUID + currentUser.uid;
     onSnapshot(doc(db, 'chats', combinedId), (doc) => {
+      const data = doc.exists()
+          && (doc.data()).messages.sort(
+            (a, b) => b.date && (b.date - a.date),
+          );
       dispatch({
         type: actionTypes.CHANGE_MESSAGES_SUCCESS,
         error: false,
         loading: true,
-        messages: doc.exists() && doc.data(),
+        messages: data,
         chatId: combinedId,
         activeUser: userUID,
       });

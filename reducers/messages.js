@@ -17,7 +17,7 @@ const messages = (state = {}, action) => {
         ...state,
         loading: action.loading,
         error: action.error,
-        messages: action.messages.messages,
+        messages: action.messages,
         activeUser: action.activeUser,
         chatId: action.chatId,
       };
