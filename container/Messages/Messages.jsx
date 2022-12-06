@@ -19,15 +19,15 @@ const Messages = () => {
   }, [messages]);
 
   return (
-    <div className="w-8/12 relative max-h-screen flex flex-col">
+    <div className="md:w-8/12 xl:w-9/12 w-full pl-12 md:pl-0 md:relative fixed h-screen flex flex-col">
       {activeUser ? (
         <>
           <TopBar />
-          <div className="message w-full overflow-auto">
+          <div className="message w-ful h-full overflow-auto">
             <div
               reversed
               ref={messageList}
-              className="chat__messages md:mx-20 flex flex-col-reverse justify-items-end overflow-auto "
+              className="chat__messages md:mx-0 lg:mx-20 flex flex-col-reverse justify-items-end overflow-auto "
             >
               {messages
                 && messages.map((message) => (response.uid === message.senderId ? (
@@ -41,7 +41,7 @@ const Messages = () => {
           <MessagesInput />
         </>
       ) : (
-        <div className="message text-white flex items-center justify-center">
+        <div className="message text-white flex items-center justify-center h-screen">
           <div className="flex flex-col items-center  py-10 px-8 bg-gray-700/50 backdrop-blur-sm rounded-xl text-2xl">
             <img
               src="/assets/img/mobile-chat.png"
@@ -55,19 +55,20 @@ const Messages = () => {
 
       <style jsx>
         {`
-          .message {
-            background-image: url("./assets/img/messagebg2.jpg");
-            background-attachment: fixed;
-            background-position: center;
-            background-repeat: no-repeat;
-            background-size: cover;
-            height: 100%;
-          }
+            .message {
+              background-image: url("./assets/img/messagebg2.jpg");
+              background-attachment: fixed;
+              background-position: center;
+              background-repeat: no-repeat;
+              background-size: cover;
+              height: 100%;
+            }
           .chat__messages {
             scroll-snap-align: end;
           }
         `}
       </style>
+
     </div>
   );
 };

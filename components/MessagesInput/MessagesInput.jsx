@@ -21,16 +21,16 @@ const MessagesInput = () => {
   };
 
   return (
-    <form className="flex Messages__Input items-center w-full bg-gray-200  py-2 px-4 select-none">
-      <button type="button" className="rounded-full mr-3 hover:bg-gray-300 p-0 py-2 text-center px-2">
+    <form className="flex Messages__Input items-center w-full bg-gray-200  py-2 md:px-4 select-none">
+      <button type="button" className="rounded-full md:mr-3 hover:bg-gray-300 p-0 py-2 text-center px-2">
         <BsEmojiSmile className="w-7 h-7 text-gray-500 " />
       </button>
-      <label htmlFor="send-img" className="rounded-full mr-3 hover:bg-gray-300 p-0 py-2 text-center px-2">
+      <label htmlFor="send-img" className="rounded-full md:mr-3 hover:bg-gray-300 p-0 py-2 text-center px-2">
         <FiPaperclip className="w-7 h-7 text-gray-500 " />
         <input type="file" onChange={(e) => setImg(e.target.files[0])} id="send-img" className="sr-only" />
       </label>
       <input value={text} placeholder="Message" required onChange={(e) => setText(e.target.value)} className="outline-none w-full rounded-xl py-2 px-4 bg-gray-50" />
-      <button type="submit" onClick={handleSend} className="rounded-full ml-3 hover:bg-gray-300 p-0 py-2 text-center px-2">
+      <button type="submit" onClick={handleSend} className="rounded-full md:ml-3 hover:bg-gray-300 p-0 py-2 px-2 text-center">
         <IoMdSend className="w-7 h-7 ml-1 text-blue-500" />
       </button>
 

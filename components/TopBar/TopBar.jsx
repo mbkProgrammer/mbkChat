@@ -9,7 +9,7 @@ const TopBar = () => {
 
   return (
     <div className="TopBar h-14 py-2 px-4 flex items-center justify-between select-none">
-      <div className="flex w-5/12 items-center justify-start">
+      <div className="flex w-11/12 items-center justify-start">
         <div className="relative">
           <span className="absolute w-3 h-3 bg-green-600 rounded-full z-10 right-0 bottom-1.5" />
           <Image

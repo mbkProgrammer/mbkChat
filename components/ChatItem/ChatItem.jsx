@@ -4,7 +4,7 @@ import Image from 'next/image';
 import { useDispatch, useSelector } from 'react-redux';
 import { CHANGE_MESSAGE_ACTION } from '../../actions';
 
-const ChatItem = ({ data }) => {
+const ChatItem = ({ data, activeMenu }) => {
   const { activeUser } = useSelector((state) => state.messages);
   const dispatch = useDispatch();
   const fullDate = new Date(data.date.seconds * 1000);
@@ -26,7 +26,7 @@ const ChatItem = ({ data }) => {
 
   return (
     <div
-      className={`py-3 px-4 w-full h-fit flex items-center duration-100 hover:bg-blue-100 ${data.userInfo.uid === activeUser && 'bg-green-200'} select-none`}
+      className={`px-1 py-2 md:py-3 md-px-4 w-full h-fit flex items-center duration-100 hover:bg-blue-100 ${data.userInfo.uid === activeUser && 'bg-green-200'} select-none`}
       onClick={handleSelect}
     >
       <div className="p-0 m-0 relative">
@@ -43,7 +43,7 @@ const ChatItem = ({ data }) => {
           alt="user picture"
         />
       </div>
-      <div className="flex justify-between w-full select-none">
+      <div className={`${!activeMenu ? 'hidden' : 'flex'} md:flex justify-between w-full select-none`}>
         <div className="ml-4 items-center">
           <h4 className="font-bold cursor-pointer">
             {data.userInfo.displayName}
