@@ -5,6 +5,7 @@ import { useEffect, useState } from 'react';
 import { FiMoreVertical } from 'react-icons/fi';
 import { useSelector } from 'react-redux';
 import { db, rdb } from '../../firebase';
+import convertTimestamp from '../../utils/convertTimestamp';
 
 const TopBar = () => {
   const { activeUser } = useSelector((state) => state.messages);
@@ -43,7 +44,13 @@ const TopBar = () => {
           {
             onlineStatus && onlineStatus.state === 'online'
               ? <p className="font-light text-sm text-green-500">online</p>
-              : <p className="font-light text-sm text-gray-500">last seen 5 min ago</p>
+              : (
+                <p className="font-light text-sm text-gray-500">
+                  last seen
+                  {' '}
+                  {convertTimestamp(onlineStatus.last_change)}
+                </p>
+              )
           }
         </div>
       </div>
