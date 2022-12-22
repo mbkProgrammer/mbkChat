@@ -3,7 +3,10 @@ import App from 'next/app';
 import { useEffect } from 'react';
 import { Provider, useDispatch } from 'react-redux';
 import Cookies from 'universal-cookie';
-import { doc, onSnapshot } from 'firebase/firestore';
+import {
+  doc, onSnapshot, serverTimestamp, updateDoc,
+} from 'firebase/firestore';
+import { onDisconnect, ref } from 'firebase/database';
 import { auth, db } from '../firebase';
 import store from '../configs/store';
 import '../styles/globals.css';
@@ -15,17 +18,19 @@ const AppWrapper = ({ Component, pageProps }) => (
     <MyApp Component={Component} pageProps={pageProps} />
   </Provider>
 );
-// AppWrapper.getInitialProps = async (appContext) => {
-//   appContext.ctx.reduxStore = store;
-//   const pageProps = await App.getInitialProps(appContext);
-//   return {
-//     ...pageProps,
-//   };
-// };
 
 function MyApp({ Component, pageProps }) {
   const cookies = new Cookies();
   const dispatch = useDispatch();
+  const isOfflineForDatabase = {
+    state: 'offline',
+    last_changed: serverTimestamp(),
+  };
+
+  const isOnlineForDatabase = {
+    state: 'online',
+    last_changed: serverTimestamp(),
+  };
 
   useEffect(() => {
     auth.onAuthStateChanged(async (user) => {
@@ -37,11 +42,11 @@ function MyApp({ Component, pageProps }) {
 
   useEffect(() => {
     auth.onIdTokenChanged(async (user) => {
-      if (!user) {
-        cookies.set('token', '', { path: '/' });
-      } else {
+      if (user && user.uid) {
         const token = await user.getIdToken();
         cookies.set('token', token, { path: '/' });
+      } else {
+        cookies.set('token', '', { path: '/' });
       }
     });
   }, [auth]);

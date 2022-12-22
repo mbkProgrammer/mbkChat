@@ -29,7 +29,7 @@ const Messages = () => {
               ref={messageList}
               className="chat__messages md:mx-0 lg:mx-20 flex flex-col-reverse justify-items-end overflow-auto "
             >
-              {messages
+              {messages && response
                 && messages.map((message) => (response.uid === message.senderId ? (
                   <YourMessage key={message.id} data={message} />
                 ) : (

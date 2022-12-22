@@ -1,9 +1,10 @@
 
-use next-redux-wrapper for ssr auth
 change signup uplaod img with redux
 set when online status
+seen status
 
 
 optional{
   set typing status
+  use next-redux-wrapper for ssr auth
 }

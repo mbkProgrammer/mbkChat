@@ -44,7 +44,7 @@ const ChatList = ({ setOpenAddChat }) => {
     <div
       className={`xl:w-3/12 md:w-4/12 w-72 min-h-screen ${
         !activeMenu && 'w-12'
-      } overflow-hidden duration-300 max-h-screen select-none z-30 relative bg-white`}
+      } overflow-hidden duration-300 max-h-screen select-none z-20 relative bg-white`}
     >
       <header className="flex flex-row relative md:max-w-full">
         <div className="md:hidden flex items-center">

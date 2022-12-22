@@ -3,10 +3,14 @@ import { useEffect, useState } from 'react';
 import Cookies from 'universal-cookie';
 import { useRouter } from 'next/router';
 import { useDispatch, useSelector } from 'react-redux';
+import {
+  onDisconnect, onValue, push, ref, serverTimestamp, set,
+} from 'firebase/database';
 import { ChatList, Messages } from '../container';
 import firebaseAdmin from '../firebaseAdmin';
 import { AddChat } from '../components';
 import { GET_CHAT_ACTION } from '../actions';
+import { rdb } from '../firebase';
 
 export default function Home() {
   const dispatch = useDispatch();
@@ -17,6 +21,27 @@ export default function Home() {
   useEffect(() => {
     if (auth.response && auth.response.uid !== '') {
       dispatch(GET_CHAT_ACTION());
+      const connectedRef = ref(rdb, '.info/connected');
+      const userStatusDatabaseRef = ref(rdb, `/status/${auth.response.uid}`);
+
+      const isOfflineForDatabase = {
+        state: 'offline',
+        last_changed: serverTimestamp(),
+      };
+
+      const isOnlineForDatabase = {
+        state: 'online',
+        last_changed: serverTimestamp(),
+      };
+
+      onValue(connectedRef, (snap) => {
+        if (snap.val() === false) {
+          return;
+        }
+        onDisconnect(userStatusDatabaseRef).set(isOfflineForDatabase).then(() => {
+          set(userStatusDatabaseRef, isOnlineForDatabase);
+        });
+      });
     } else {
       router.push('/signUp');
     }

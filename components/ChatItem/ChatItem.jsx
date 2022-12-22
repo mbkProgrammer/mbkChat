@@ -1,43 +1,53 @@
 /* eslint-disable jsx-a11y/no-static-element-interactions */
 /* eslint-disable jsx-a11y/click-events-have-key-events */
+import { onValue, ref } from 'firebase/database';
+import { doc, getDoc, onSnapshot } from 'firebase/firestore';
 import Image from 'next/image';
+import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { CHANGE_MESSAGE_ACTION } from '../../actions';
+import { db, rdb } from '../../firebase';
+import convertTimestamp from '../../utils/convertTimestamp';
 
 const ChatItem = ({ data, activeMenu }) => {
   const { activeUser } = useSelector((state) => state.messages);
+  const [onlineStatus, setOnlineStatus] = useState(null);
+  const [userInfo, setUserInfo] = useState(null);
   const dispatch = useDispatch();
-  const fullDate = new Date(data.date.seconds * 1000);
-  const todayDate = new Date();
-  const date = fullDate.toLocaleDateString('zh-Hans-CN', {
-    month: '2-digit',
-    year: '2-digit',
-    day: '2-digit',
-  });
-  const time = fullDate.toLocaleTimeString('en-US', {
-    hour12: false,
-    hour: '2-digit',
-    minute: '2-digit',
-  });
+
+  useEffect(() => {
+    onSnapshot(doc(db, 'users', data.userUid), (doc) => setUserInfo(doc.data()));
+    onValue(ref(rdb, `status/${data.userUid}`), (snapshot) => {
+      setOnlineStatus(snapshot.val());
+    });
+  }, []);
+
+  // const docSnap = await getDoc(data.userInfo);
+
+  // console.log('data', docSnap.data());
 
   const handleSelect = async () => {
-    dispatch(CHANGE_MESSAGE_ACTION({ userUID: data.userInfo.uid }));
+    dispatch(CHANGE_MESSAGE_ACTION({ userUID: userInfo.uid }));
   };
 
   return (
     <div
-      className={`px-1 py-2 md:py-3 md-px-4 w-full h-fit flex items-center duration-100 hover:bg-blue-100 ${data.userInfo.uid === activeUser && 'bg-green-200'} select-none`}
+      className={`${!userInfo && 'animate-pulse'} px-1 py-2 md:py-3 md-px-4 w-full h-fit flex items-center duration-100 hover:bg-blue-100 ${userInfo && userInfo.uid === activeUser && 'bg-green-200'} select-none`}
       onClick={handleSelect}
     >
       <div className="p-0 m-0 relative">
-        <span className="absolute w-3 h-3 bg-green-600 rounded-full z-10 right-0 bottom-1.5" />
+        {
+          onlineStatus && onlineStatus.state === 'online'
+            && <span className="absolute w-3 h-3 bg-green-600 rounded-full z-10 right-0 bottom-1.5" />
+        }
         <Image
           src={
-            data.userInfo.photoURL
-              ? data.userInfo.photoURL
+            userInfo
+            && userInfo.photoURL
+              ? userInfo.photoURL
               : '/assets/img/user.png'
           }
-          className="rounded-full"
+          className={`rounded-full hover:rounded-2xl ${userInfo && userInfo.uid === activeUser && 'rounded-2xl'}`}
           width="48"
           height="48"
           alt="user picture"
@@ -46,7 +56,7 @@ const ChatItem = ({ data, activeMenu }) => {
       <div className={`${!activeMenu ? 'hidden' : 'flex'} md:flex justify-between w-full select-none`}>
         <div className="ml-4 items-center">
           <h4 className="font-bold cursor-pointer">
-            {data.userInfo.displayName}
+            {userInfo && userInfo.displayName}
           </h4>
           <p className="font-normal text-sm text-gray-500 cursor-pointer">
             {data.lastMessage && data.lastMessage.text}
@@ -54,17 +64,12 @@ const ChatItem = ({ data, activeMenu }) => {
         </div>
         <div className="flex flex-col justify-between items-end">
           <p className="text-xs text-gray-400 font-normal cursor-pointer">
-            {data.date.seconds
-            && fullDate.setHours(0, 0, 0, 0) === todayDate.setHours(0, 0, 0, 0)
-              ? time
-              : date}
-          </p>
-          <p className="bg-green-500 rounded-full w-5 h-5 cursor-pointer text-xs text-white flex justify-center items-center">
-            1
+            {convertTimestamp(data.date.seconds)}
           </p>
         </div>
       </div>
     </div>
   );
 };
+
 export default ChatItem;

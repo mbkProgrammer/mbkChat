@@ -133,6 +133,10 @@ const LOG_OUT_ACTION = () => async (dispatch) => {
     });
   }
 };
+
+const HANDLE_SEEN_ACTION = () => (dispatch) => {
+
+};
 export {
   CREATE_USER_ACTION,
   SIGN_IN_USER_ACTION,

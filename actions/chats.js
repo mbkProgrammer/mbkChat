@@ -43,19 +43,11 @@ const ADD_CHAT_ACTION = ({ email, setOpenAddChat }) => async (dispatch) => {
 
       // create user chats
       await updateDoc(doc(db, 'userChats', currentUser.uid), {
-        [`${combinedId}.userInfo`]: {
-          uid: user.uid,
-          displayName: user.displayName,
-          photoURL: user.photoURL,
-        },
+        [`${combinedId}.userUid`]: user.uid,
         [`${combinedId}.date`]: serverTimestamp(),
       });
       await updateDoc(doc(db, 'userChats', user.uid), {
-        [`${combinedId}.userInfo`]: {
-          uid: currentUser.uid,
-          displayName: currentUser.displayName,
-          photoURL: currentUser.photoURL,
-        },
+        [`${combinedId}.userUid`]: currentUser.uid,
         [`${combinedId}.date`]: serverTimestamp(),
       });
       setOpenAddChat(false);

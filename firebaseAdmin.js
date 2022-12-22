@@ -1,15 +1,19 @@
 import * as firebaseAdmin from 'firebase-admin';
+
 import { getApp } from 'firebase-admin';
+
+const functions = require('firebase-functions');
+const admin = require('firebase-admin');
 
 // import serviceAccount from './configs/secret.json';
 const serviceAccount = require('./configs/secret.json');
 
-if (!firebaseAdmin.apps.length) {
+if (!admin.apps.length) {
   console.log('show in server');
-  firebaseAdmin.initializeApp({
-    credential: firebaseAdmin.credential.cert(serviceAccount),
+  admin.initializeApp({
+    credential: admin.credential.cert(serviceAccount),
     databaseURL: 'https://mbkchat-5b996.firebaseio.com',
   });
 }
 
-export default firebaseAdmin;
+export default admin;

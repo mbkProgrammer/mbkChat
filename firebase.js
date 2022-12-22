@@ -3,6 +3,9 @@ import * as firebase from 'firebase/app';
 import { getAuth, setPersistence, browserSessionPersistence } from 'firebase/auth';
 import { getStorage } from 'firebase/storage';
 import { getFirestore } from 'firebase/firestore';
+import { getDatabase } from 'firebase/database';
+import { connectFunctionsEmulator, getFunctions } from 'firebase/functions';
+import { getApp } from 'firebase/app';
 
 const firebaseConfig = {
   apiKey: 'AIzaSyB5ZZOR0k6vO4WCkIf796GweDXwOZn07Go',
@@ -26,4 +29,7 @@ if (typeof window !== 'undefined' && !firebase.getApps().length) {
 export const auth = app && getAuth();
 export const storage = app && getStorage();
 export const db = app && getFirestore();
+export const rdb = app && getDatabase();
+export const functions = getFunctions(firebase.initializeApp(firebaseConfig));
+connectFunctionsEmulator(functions, 'localhost', 5001);
 // export const analytics = getAnalytics(app);
