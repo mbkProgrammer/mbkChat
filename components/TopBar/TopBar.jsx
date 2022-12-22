@@ -48,7 +48,7 @@ const TopBar = () => {
                 <p className="font-light text-sm text-gray-500">
                   last seen
                   {' '}
-                  {convertTimestamp(onlineStatus.last_change)}
+                  {convertTimestamp(onlineStatus.last_changed)}
                 </p>
               )
           }
