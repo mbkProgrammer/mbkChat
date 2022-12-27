@@ -11,7 +11,7 @@ const OtherMessage = ({ data }) => (
     </div>
     <div className="self-end flex items-center">
       <span className="text-gray-900 text-xs">
-        {convertTimestamp(data.date.seconds)}
+        {convertTimestamp(data.date.seconds * 1000)}
 
       </span>
     </div>

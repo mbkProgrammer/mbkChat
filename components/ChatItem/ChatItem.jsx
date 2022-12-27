@@ -64,7 +64,7 @@ const ChatItem = ({ data, activeMenu }) => {
         </div>
         <div className="flex flex-col justify-between items-end">
           <p className="text-xs text-gray-400 font-normal cursor-pointer">
-            {convertTimestamp(data.date.seconds)}
+            {convertTimestamp(data.date.seconds * 1000)}
           </p>
         </div>
       </div>

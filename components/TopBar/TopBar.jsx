@@ -17,6 +17,7 @@ const TopBar = () => {
       setOnlineStatus(snapshot.val());
     });
   }, []);
+  console.log('onlineStatus.last_changed', onlineStatus && onlineStatus);
 
   return (
     <div className="TopBar h-14 py-2 px-4 flex items-center justify-between select-none">

@@ -1,5 +1,5 @@
 const convertTimestamp = (timestamp) => {
-  const fullDate = new Date(timestamp * 1000);
+  const fullDate = new Date(timestamp);
   const todayDate = new Date();
   const date = fullDate.toLocaleDateString('zh-Hans-CN', {
     month: '2-digit',
